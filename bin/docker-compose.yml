@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  postgresql:
+    image: postgres
+    container_name: postgres-docker
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+      - db-data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  db-data:
+    driver: local
