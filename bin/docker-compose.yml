@@ -10,7 +10,8 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
     volumes:
-      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+      - ./schema.sql:/docker-entrypoint-initdb.d/a_schema.sql
+      - ./data.sql:/docker-entrypoint-initdb.d/b_data.sql
       - db-data:/var/lib/postgresql/data
     restart: always
 

@@ -2,13 +2,11 @@ package com.alviszalamans.survey.data.entity;
 
 import com.vladmihalcea.hibernate.type.array.IntArrayType;
 import org.hibernate.annotations.Type;
-
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-
 import javax.persistence.*;
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 
@@ -23,7 +21,8 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long resultId;
 
-    @NotEmpty(message = "Name is required")
+    @NotBlank(message = "Name is required")
+    @Size(min = 5, message = "Your name must be at least 5 characters long")
     @Column(name="NAME")
     private String fullName;
 

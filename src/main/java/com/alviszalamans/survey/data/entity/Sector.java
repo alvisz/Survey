@@ -1,6 +1,8 @@
 package com.alviszalamans.survey.data.entity;
-
+import org.hibernate.annotations.Type;
 import javax.persistence.*;
+import java.util.List;
+
 
 @Entity
 @Table(name="SECTORS")
@@ -8,28 +10,34 @@ public class Sector {
     @Id
     @Column(name = "SECTOR_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long sectorId;
-    @Column(name="PARENT")
-    private Long parent;
+    private int sectorId;
+
+    @Type(type = "list-array")
+    @Column(
+            name = "CHILDREN",
+            columnDefinition = "integer[]"
+    )
+    private int[] children;
+
     @Column(name="NAME")
     private String name;
 
-    public long getSectorId() {
+
+
+    public int getSectorId() {
         return sectorId;
     }
 
-    public void setSectorId(long sectorId) {
+    public void setSectorId(int sectorId) {
         this.sectorId = sectorId;
     }
 
-    public long getParent() {
-        if (parent == null){
-            return 1;
-        } else return parent;
+    public int[] getChildren() {
+        return children;
     }
 
-    public void setParent(long parent) {
-        this.parent = parent;
+    public void setChildren(int[] children) {
+        this.children = children;
     }
 
     public String getName() {
