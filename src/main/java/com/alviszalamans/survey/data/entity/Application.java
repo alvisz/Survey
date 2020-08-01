@@ -16,6 +16,7 @@ import javax.validation.constraints.Size;
         @TypeDef(name = "list-array", typeClass = IntArrayType.class)
 })
 public class Application {
+
     @Id
     @Column(name = "RESULT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,8 +26,6 @@ public class Application {
     @Size(min = 5, message = "Your name must be at least 5 characters long")
     @Column(name="NAME")
     private String fullName;
-
-
 
     @Type(type = "list-array")
     @Column(
@@ -64,9 +63,7 @@ public class Application {
         this.fullName = fullName;
     }
 
-    public int[] getSectors() {
-        return sectors;
-    }
+    public int[] getSectors() { return sectors; }
 
     public void setSectors(int[] sectors) {
         this.sectors = sectors;

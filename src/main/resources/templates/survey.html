@@ -21,26 +21,30 @@
 					</div>
 					<div class="form-group">
 						<label for="sectors">Sectors: </label>
-						<select multiple class="form-control" size="5" id="sectors" th:field="*{sectors}">
-							<optgroup th:each="levelOne : ${sectorsList}" th:label="${levelOne.getName()}">
+						<select multiple class="form-control" size="80" id="sectors" th:field="*{sectors}">
+							<th:block th:each="levelOne : ${sectorsList}">
+								<option
+										th:text="${levelOne.getName()}"
+										th:value="${levelOne.getSectorId()}">
+								</option>
 								<th:block th:each="sectorr : ${levelOne.getChildren()}">
 									<option
-											th:text="${sectorr.getName()} + ' ' + ${sectorr.getChildren().size()}"
-											th:value="${sectorr.getSectorId()}">
+										th:text="'&nbsp;&nbsp;&nbsp;&nbsp;' + ${sectorr.getName()}"
+										th:value="${sectorr.getSectorId()}">
 									</option>
 									<th:block th:each="sector2 : ${sectorr.getChildren()}">
 										<option
-												th:text="'&nbsp;&nbsp;&nbsp;' + ${sector2.getName()} + ' ' + ${sector2.getChildren().size()}"
-												th:value="${sector2.getSectorId()}">
+											th:text="'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ${sector2.getName()}"
+											th:value="${sector2.getSectorId()}">
 										</option>
-										<option th:each="sector3 : ${sector2.getChildren()}"
-												th:text="'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ${sector3.getName()} + ' ' + ${sector3.getChildren().size()}"
-												th:value="${sector3.getSectorId()}">
+										<option
+											th:each="sector3 : ${sector2.getChildren()}"
+											th:text="'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ${sector3.getName()}"
+											th:value="${sector3.getSectorId()}">
 										</option>
 									</th:block>
 								</th:block>
-							</optgroup>
-
+							</th:block>
 						</select>
 					</div>
 					<div th:if="${#fields.hasErrors('sectors')}" class="alert alert-danger" role="alert">

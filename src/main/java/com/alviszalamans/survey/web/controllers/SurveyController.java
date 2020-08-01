@@ -1,9 +1,8 @@
 package com.alviszalamans.survey.web.controllers;
 
 import com.alviszalamans.survey.data.entity.Application;
-import com.alviszalamans.survey.data.entity.Sector;
-import com.alviszalamans.survey.data.entity.SmallSector;
-import com.alviszalamans.survey.data.processors.SectorProcessor;
+import com.alviszalamans.survey.data.dto.SmallSector;
+import com.alviszalamans.survey.data.service.SectorService;
 import com.alviszalamans.survey.data.repository.ApplicationRepository;
 import com.alviszalamans.survey.data.repository.SectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,30 +27,22 @@ public class SurveyController {
     private ApplicationRepository applicationRepository;
 
     @Autowired
-    private SectorRepository sectorRepository;
+    private SectorService sectorService;
 
-
-    @Autowired
-    private SectorProcessor sectorProcessor;
-
-    List<SmallSector> nestedSectors;
-
+    @ModelAttribute("sectorsList")
+    public List<SmallSector> getSectors() {
+        return sectorService.getNestedSectors();
+    }
 
     @GetMapping
     public String getForm(Model model, HttpSession session) {
-        List<SmallSector> nestedSectors = new ArrayList<>();
-        if (nestedSectors.isEmpty()){
-            nestedSectors = sectorProcessor.getNestedSectors();
-        }
         session.setAttribute("id",0L);
-        model.addAttribute("sectorsList", nestedSectors);
         model.addAttribute("application", new Application());
         return "survey";
     }
 
     @PostMapping
     public String sendSurvey(@Valid @ModelAttribute("application") Application app, BindingResult bindingResult, HttpSession session, Model model){
-        model.addAttribute("sectorsList", nestedSectors);
         Long id = (Long) session.getAttribute("id");
         if (!bindingResult.hasErrors()){
             if ((Long) session.getAttribute("id") == 0L){

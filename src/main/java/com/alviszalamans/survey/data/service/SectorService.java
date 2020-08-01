@@ -1,7 +1,7 @@
-package com.alviszalamans.survey.data.processors;
+package com.alviszalamans.survey.data.service;
 
 import com.alviszalamans.survey.data.entity.Sector;
-import com.alviszalamans.survey.data.entity.SmallSector;
+import com.alviszalamans.survey.data.dto.SmallSector;
 import com.alviszalamans.survey.data.repository.SectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,31 +12,37 @@ import java.util.List;
 
 
 @Component
-public class SectorProcessor {
+public class SectorService {
 
     @Autowired
     SectorRepository sectorRepository;
 
-    private List<Sector> sectors;
-    private List<SmallSector> nestedSectors = new ArrayList<SmallSector>();
+    private final List<SmallSector> nestedSectors = new ArrayList<SmallSector>();
 
     public List<SmallSector> getNestedSectors(){
+        if (this.nestedSectors.size() == 0){
+            this.retrieveSectors();
+        }
+        return this.nestedSectors;
+    }
+
+    private void retrieveSectors(){
+        List<Sector> sectors;
         try {
             sectors = sectorRepository.findAll();
         } catch (NullPointerException e){
-            return Collections.emptyList();
+            sectors = Collections.emptyList();
         }
         for (Sector s: sectors){
             SmallSector smallSector = new SmallSector(s.getSectorId(),s.getName());
             if (s.getChildren() != null) smallSector.addToChildrenQueue(s.getChildren());
             nestedSectors.add(smallSector);
         }
-        process();
-        return nestedSectors;
+        convertSectors();
     }
 
 
-    private void process(){
+    private void convertSectors(){
         ArrayList<SmallSector> toRemove = new ArrayList<>();
         for (SmallSector s: nestedSectors){
             ArrayList<Integer> idToRemove = new ArrayList<>();
