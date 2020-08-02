@@ -4,19 +4,19 @@ package com.alviszalamans.survey.data.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmallSector {
+public class SectorDto {
 
     private final int id;
     private final String name;
-    private final List<SmallSector> children = new ArrayList<>();
+    private final List<SectorDto> children = new ArrayList<>();
     private final List<Integer> childrenQueue = new ArrayList<>();
 
-    public SmallSector(int id, String name) {
+    public SectorDto(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public void addChild(SmallSector sector){
+    public void addChild(SectorDto sector){
         this.children.add(sector);
     }
 
@@ -26,7 +26,7 @@ public class SmallSector {
 
     public String getName() { return name; }
 
-    public List<SmallSector> getChildren() { return children; }
+    public List<SectorDto> getChildren() { return children; }
 
     public List<Integer> getChildrenQueue() {
         return childrenQueue;

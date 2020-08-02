@@ -1,10 +1,9 @@
 package com.alviszalamans.survey.web.controllers;
 
 import com.alviszalamans.survey.data.entity.Application;
-import com.alviszalamans.survey.data.dto.SmallSector;
+import com.alviszalamans.survey.data.dto.SectorDto;
 import com.alviszalamans.survey.data.service.SectorService;
 import com.alviszalamans.survey.data.repository.ApplicationRepository;
-import com.alviszalamans.survey.data.repository.SectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,7 +28,7 @@ public class SurveyController {
     private SectorService sectorService;
 
     @ModelAttribute("sectorsList")
-    public List<SmallSector> getSectors() {
+    public List<SectorDto> getSectors() {
         return sectorService.getNestedSectors();
     }
 
@@ -45,6 +43,7 @@ public class SurveyController {
     public String sendSurvey(@Valid @ModelAttribute("application") Application app, BindingResult bindingResult, HttpSession session, Model model){
         Long id = (Long) session.getAttribute("id");
         if (!bindingResult.hasErrors()){
+            model.addAttribute("success",true);
             if ((Long) session.getAttribute("id") == 0L){
                 Long newId = applicationRepository.save(app).getResultId();
                 session.setAttribute("id", newId);
@@ -57,6 +56,4 @@ public class SurveyController {
         }
         return "survey";
     }
-
-
 }

@@ -1,0 +1,38 @@
+
+version: "3.7"
+services:
+  web-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_SERVER=postgres-docker
+      - DB_USERNAME=docker
+      - DB_PASSWORD=docker
+    networks:
+      - spring-boot-network
+    depends_on:
+      - postgresql
+  postgresql:
+    image: postgres
+    container_name: postgres-docker
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - ./bin/schema.sql:/docker-entrypoint-initdb.d/a_schema.sql
+      - ./bin/data.sql:/docker-entrypoint-initdb.d/b_data.sql
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-boot-network
+    restart: always
+networks:
+  spring-boot-network:
+    driver: bridge
+volumes:
+  db-data:
+    driver: local
