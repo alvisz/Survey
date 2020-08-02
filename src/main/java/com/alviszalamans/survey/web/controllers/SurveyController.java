@@ -44,10 +44,10 @@ public class SurveyController {
         Long id = (Long) session.getAttribute("id");
         if (!bindingResult.hasErrors()){
             model.addAttribute("success",true);
-            if ((Long) session.getAttribute("id") == 0L){
+            if ((Long) session.getAttribute("id") == 0L){ // If it has no ID, then it means the form has not been submitted before
                 Long newId = applicationRepository.save(app).getResultId();
                 session.setAttribute("id", newId);
-            } else {
+            } else { // Finds the answer by id and fills the form with the data so it can be updated
                 if (applicationRepository.findById(id).isPresent()){
                     app.setResultId(id);
                     applicationRepository.save(app);
