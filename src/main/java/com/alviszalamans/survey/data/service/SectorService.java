@@ -34,9 +34,9 @@ public class SectorService {
             sectors = Collections.emptyList(); // If no sectors added to DB gives empty collection
         }
         for (Sector s: sectors){
-            SectorDto smallSector = new SectorDto(s.getSectorId(),s.getName());
-            if (s.getChildren() != null) smallSector.addToChildrenQueue(s.getChildren()); // if ahs nested sectors, adds them to sectorDto children list
-            nestedSectors.add(smallSector);
+            SectorDto sectorDto = new SectorDto(s.getSectorId(),s.getName());
+            if (s.getChildren() != null) sectorDto.addToChildrenQueue(s.getChildren()); // if ahs nested sectors, adds them to sectorDto children list
+            nestedSectors.add(sectorDto);
         }
         convertSectors(); // Converts the list in multilevel list
     }
