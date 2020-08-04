@@ -18,3 +18,5 @@ CREATE TABLE RESULTS(
 );
 
 CREATE SEQUENCE hibernate_sequence START 1;
+
+CREATE INDEX name_index ON RESULTS (NAME);
